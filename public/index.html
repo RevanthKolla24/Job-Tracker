@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Job Tracker</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-modal" class="modal-overlay" style="display: none;">
+        <div class="card form-card text-center" style="position: relative;">
+            <button id="close-modal-btn" class="close-btn">&times;</button>
+            
+            <div id="auth-ui">
+                <h1 id="modal-title" style="margin-top:0; font-weight: 900; text-transform: uppercase;">Log In</h1>
+                <p id="modal-subtitle" style="margin-bottom: 20px;">Sign in to sync your jobs across devices.</p>
+                
+                <form id="login-form" novalidate style="display: flex; flex-direction: column; gap: 15px;">
+                    
+                    <div id="name-inputs" style="display: none; gap: 15px;">
+                        <input type="text" id="first-name-input" placeholder="First Name" style="flex: 1;">
+                        <input type="text" id="last-name-input" placeholder="Last Name" style="flex: 1;">
+                    </div>
+
+                    <input type="email" id="email-input" placeholder="Email Address">
+                    <input type="password" id="password-input" placeholder="Password">
+                    
+                    <div id="signup-extras" style="display: none; flex-direction: column; gap: 15px;">
+                        
+                        <input type="password" id="confirm-password-input" placeholder="Confirm Password" style="display: none;">
+                        
+                        <div class="password-strength-container text-left">
+                            <div class="strength-bar-wrapper">
+                                <span id="strength-label">Weak</span>
+                                <div class="strength-bar-bg">
+                                    <div id="strength-bar-fill"></div>
+                                </div>
+                            </div>
+                            <ul class="strength-reqs">
+                                <li id="req-length">Use 6 to 64 characters.</li>
+                                <li id="req-complex">Besides letters, include at least a number or symbol (!@#$%^*-_+=).</li>
+                                <li id="req-case">Password is case sensitive.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" id="modal-submit-btn" class="btn-primary">Log In</button>
+                    
+                    <p id="login-error" style="color: var(--status-rejected); display: none; margin: 0; font-weight: bold;"></p>
+                </form>
+
+                <p style="margin-top: 20px; font-weight: 600; font-size: 0.9rem;">
+                    <span id="toggle-prompt">Don't have an account?</span> 
+                    <a href="#" id="toggle-auth-mode" style="color: var(--primary); text-decoration: underline; text-decoration-thickness: 2px;">Sign Up</a>
+                </p>
+            </div>
+
+            <div id="success-ui" style="display: none; flex-direction: column; align-items: center; gap: 15px; padding: 20px 0;">
+                <h1 style="margin: 0; font-weight: 900; text-transform: uppercase; color: var(--status-offer);">Success!</h1>
+                <p id="success-message-text" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 20px;"></p>
+                <button id="success-close-btn" class="btn-primary" style="width: 100%;">Got it!</button>
+            </div>
+
+        </div>
+    </div>
+
+    <button id="settings-fab" class="fab-btn" title="Settings" style="display: none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    </button>
+
+    <div id="dashboard" class="container">
+        <header class="app-header">
+            <div>
+                <h1>Job Tracker.</h1>
+                <p>Help you find your next job.</p>
+            </div>
+            <div class="header-actions">
+                <button id="admin-dashboard-btn" class="btn-primary" style="display: none; background: var(--accent);">Admin Panel</button>
+                <button id="auth-btn" class="btn-primary auth-toggle-btn">Log In</button>
+                <button id="theme-toggle" class="theme-btn"></button>
+            </div>
+        </header>
+        
+        <div class="card">
+            <form id="job-form">
+                <input type="text" id="company" placeholder="Company Name">
+                <input type="text" id="title" placeholder="Job Title">
+                <select id="status">
+                    <option value="Applied" selected>Applied</option>
+                    <option value="Interviewing">Interviewing</option>
+                    <option value="Offer">Offer</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+                <input type="text" id="apply-date" placeholder="Apply Date">
+                
+                <button type="submit" class="btn-primary">Add Job</button>
+                <div id="job-form-error" class="form-error-msg"></div>
+            </form>
+        </div>
+
+        <div class="card table-container">
+            <table id="job-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th class="align-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="job-list">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="settings-page" class="container" style="display: none;">
+        
+        <header class="app-header" style="flex-direction: column; align-items: flex-start; gap: 15px;">
+            <button id="back-to-dashboard-btn" class="btn-primary" style="padding: 8px 12px; font-size: 0.85rem;">&larr; Back to Dashboard</button>
+            <div>
+                <h1>Settings.</h1>
+                <p>Manage your account preferences.</p>
+            </div>
+        </header>
+
+        <div class="card" style="padding: 30px;">
+            <h2 style="margin-top: 0; font-weight: 900; text-transform: uppercase;">Profile Information</h2>
+            <form id="settings-form" novalidate style="display: flex; flex-direction: column; gap: 20px; max-width: 500px;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">Email Address</label>
+                    <input type="text" id="read-only-email" disabled style="background: var(--bg-color); opacity: 0.7; cursor: not-allowed;">
+                </div>
+                <div>
+                    <label for="update-name-input" style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">Display Name</label>
+                    <input type="text" id="update-name-input" placeholder="e.g. John Doe">
+                </div>
+                
+                <div id="settings-form-error" class="form-error-msg" style="position: relative; transform: none; bottom: auto; margin: 0; text-align: left;"></div>
+                
+                <button type="submit" id="settings-submit-btn" class="btn-primary" style="align-self: flex-start;">Save Changes</button>
+                <p id="settings-success-msg" style="color: var(--status-offer); font-weight: 800; display: none; margin: 0; text-transform: uppercase;"></p>
+            </form>
+        </div>
+
+        <div class="card" style="padding: 30px;">
+            <h2 style="margin-top: 0; font-weight: 900; text-transform: uppercase;">Account Security</h2>
+            
+            <form id="settings-email-form" novalidate style="display: flex; flex-direction: column; gap: 15px; max-width: 500px; margin-bottom: 30px;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">Current Password</label>
+                    <input type="password" id="current-password-email-input" placeholder="Required to change email">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">New Email Address</label>
+                    <input type="email" id="update-email-input" placeholder="Enter new email address">
+                </div>
+                
+                <div id="email-error-msg" class="form-error-msg" style="position: relative; transform: none; bottom: auto; margin: 0; text-align: left;"></div>
+                <button type="submit" id="update-email-btn" class="btn-primary" style="align-self: flex-start;">Update Email</button>
+                <p id="email-success-msg" style="color: var(--status-offer); font-weight: 800; display: none; margin: 0; text-transform: uppercase;"></p>
+            </form>
+
+            <hr style="border: none; border-bottom: var(--border-width) solid var(--border-color); margin-bottom: 30px;">
+
+            <form id="settings-password-form" novalidate style="display: flex; flex-direction: column; gap: 15px; max-width: 500px;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">Current Password</label>
+                    <input type="password" id="current-password-input" placeholder="Required to change password">
+                </div>
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">New Password</label>
+                    <input type="password" id="update-password-input" placeholder="New Password">
+                </div>
+                <div>
+                    <input type="password" id="update-confirm-password-input" placeholder="Confirm New Password">
+                </div>
+
+                <div class="password-strength-container text-left">
+                    <div class="strength-bar-wrapper">
+                        <span id="settings-strength-label">Weak</span>
+                        <div class="strength-bar-bg">
+                            <div id="settings-strength-bar-fill"></div>
+                        </div>
+                    </div>
+                    <ul class="strength-reqs">
+                        <li id="settings-req-length">Use 6 to 64 characters.</li>
+                        <li id="settings-req-complex">Besides letters, include at least a number or symbol (!@#$%^*-_+=).</li>
+                        <li id="settings-req-case">Password is case sensitive.</li>
+                    </ul>
+                </div>
+
+                <div id="password-error-msg" class="form-error-msg" style="position: relative; transform: none; bottom: auto; margin: 0; text-align: left;"></div>
+                <button type="submit" id="update-password-btn" class="btn-primary" style="align-self: flex-start;">Update Password</button>
+                <p id="password-success-msg" style="color: var(--status-offer); font-weight: 800; display: none; margin: 0; text-transform: uppercase;"></p>
+            </form>
+        </div>
+
+        <div class="card" style="padding: 30px; border-color: var(--status-rejected); box-shadow: 8px 8px 0px var(--status-rejected);">
+            <h2 style="margin-top: 0; color: var(--status-rejected); font-weight: 900; text-transform: uppercase;">Danger Zone</h2>
+            <p style="font-weight: 600; margin-bottom: 20px;">Once you delete your account, there is no going back. All of your saved jobs will be permanently erased.</p>
+            
+            <form id="delete-account-form" novalidate style="display: flex; flex-direction: column; gap: 15px; max-width: 500px;">
+                <div>
+                    <label style="font-weight: 800; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem;">Confirm Password to Delete</label>
+                    <input type="password" id="delete-password-input" placeholder="Current Password">
+                </div>
+                <div id="delete-error-msg" class="form-error-msg" style="position: relative; transform: none; bottom: auto; margin: 0; text-align: left;"></div>
+                <button type="submit" id="delete-account-btn" class="btn-primary" style="background: var(--status-rejected); color: #000; border-color: #000; align-self: flex-start;">Delete Account</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-page" class="container" style="display: none;">
+        <header class="app-header" style="flex-direction: column; align-items: flex-start; gap: 15px; border-color: var(--accent); box-shadow: 6px 6px 0px var(--accent);">
+            <button id="admin-back-btn" class="btn-primary" style="padding: 8px 12px; font-size: 0.85rem;">&larr; Back to Dashboard</button>
+            <div>
+                <h1>Admin Panel.</h1>
+                <p>Viewing all jobs from all users across the platform.</p>
+            </div>
+        </header>
+
+        <div class="card table-container" style="border-color: var(--accent); box-shadow: 8px 8px 0px var(--accent);">
+            <table id="admin-job-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-job-list">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

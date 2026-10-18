@@ -1,0 +1,622 @@
+/* ==========================================
+   1. NEO-BRUTALISM LIGHT MODE (VARIABLES)
+========================================== */
+:root {
+    --bg-color: #fff4e0;      
+    --surface: #ffffff;
+    --border-color: #000000;
+    --text-main: #000000;
+    --text-muted: #333333;
+    
+    --primary: #ff5e5b;       
+    --accent: #00cecb;        
+    
+    --shadow-color: #000000;
+    --border-width: 3px;
+    --radius: 8px;
+    
+    --dot-color: #cccccc;
+    
+    --status-applied: #38bdf8;       
+    --status-interviewing: #FFD500;  
+    --status-offer: #00FF7F;         
+    --status-rejected: #FF3366;      
+    --status-ghosted: #d1d5db;       
+}
+
+/* ==========================================
+   2. MIDNIGHT BRUTALISM DARK MODE (VARIABLES)
+========================================== */
+[data-theme="dark"] {
+    --bg-color: #09090b;      
+    --surface: #18181b;       
+    --border-color: #e4e4e7;  
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    
+    --primary: #a855f7;       
+    --accent: #22d3ee;        
+    
+    --shadow-color: #a855f7;  
+    
+    --dot-color: rgba(255, 255, 255, 0.06); 
+    
+    --status-applied: #0ea5e9;       
+    --status-interviewing: #EAB308;  
+    --status-offer: #22C55E;         
+    --status-rejected: #EF4444;      
+    --status-ghosted: #4b5563;
+}
+
+/* ==========================================
+   3. GLOBAL STYLES
+========================================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 40px 20px;
+    line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
+    
+    background-image: radial-gradient(var(--dot-color) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    background-position: -19px -19px;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ==========================================
+   4. HEADER & ACTIONS
+========================================== */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    background: var(--surface);
+    padding: 20px;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 6px 6px 0px var(--shadow-color);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.app-header p {
+    margin: 5px 0 0 0;
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.theme-btn {
+    background: var(--accent);
+    color: #000; 
+    border: var(--border-width) solid #000;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 4px 4px 0px #000;
+    text-transform: uppercase;
+    /* Added smooth transition matching the main buttons */
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+}
+
+.theme-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
+    filter: brightness(0.95);
+}
+
+.theme-btn:active {
+    box-shadow: 0px 0px 0px #000;
+    transform: translate(4px, 4px);
+}
+[data-theme="dark"] .theme-btn:hover {
+    box-shadow: 2px 2px 0px var(--shadow-color);
+}
+[data-theme="dark"] .theme-btn:active {
+    box-shadow: 0px 0px 0px var(--shadow-color);
+}
+
+.auth-toggle-btn {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+}
+
+/* ==========================================
+   5. CARDS & FORMS
+========================================== */
+.card {
+    background: var(--surface);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+    box-shadow: 8px 8px 0px var(--shadow-color);
+    transition: all 0.2s ease;
+}
+
+#job-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    padding: 24px 24px 38px 24px;
+    position: relative;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 4px;
+    font-family: inherit; 
+    font-size: 1rem;
+    font-weight: 700; 
+    box-shadow: 3px 3px 0px var(--border-color);
+    outline: none;
+    /* Smooth transition for hover effects */
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, background 0.1s;
+}
+
+/* Hover state for all inputs and the Date Picker! */
+input:hover, select:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(var(--invert-icon, 0)); 
+}
+[data-theme="dark"] { --invert-icon: 1; }
+
+/* Text inputs stay pressed while typing */
+input:focus {
+    box-shadow: 0px 0px 0px var(--border-color);
+    transform: translate(3px, 3px);
+    background: var(--surface);
+}
+
+/* Dropdowns ONLY press down while actively being clicked */
+select:active {
+    box-shadow: 0px 0px 0px var(--border-color);
+    transform: translate(3px, 3px);
+}
+
+/* ==========================================
+   6. BUTTONS
+========================================== */
+.btn-primary {
+    background: var(--primary);
+    color: #000; 
+    border: 2px solid #000;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000;
+    transition: all 0.1s ease;
+}
+
+[data-theme="dark"] .btn-primary {
+    border-color: var(--border-color);
+    box-shadow: 4px 4px 0px var(--border-color);
+    color: #fff;
+}
+
+.btn-primary:active {
+    box-shadow: 0px 0px 0px #000;
+    transform: translate(4px, 4px);
+}
+[data-theme="dark"] .btn-primary:active {
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+/* ==========================================
+   7. TABLE & STATUS BADGES
+========================================== */
+.table-container {
+    overflow-x: auto;
+    padding: 10px; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+th {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 900;
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.align-right {
+    text-align: right;
+}
+
+td select {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #000; 
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    appearance: none; 
+    -webkit-appearance: none;
+    box-shadow: 3px 3px 0px #000;
+    text-transform: uppercase;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+}
+
+[data-theme="dark"] td select {
+    box-shadow: 3px 3px 0px var(--border-color);
+}
+
+td select:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px #000;
+    filter: brightness(0.95);
+}
+[data-theme="dark"] td select:hover {
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+td select:active {
+    box-shadow: 0px 0px 0px #000;
+    transform: translate(3px, 3px);
+}
+[data-theme="dark"] td select:active {
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+/* Status Background Colors */
+.status-applied { background-color: var(--status-applied) !important; }
+.status-interviewing { background-color: var(--status-interviewing) !important; }
+.status-offer { background-color: var(--status-offer) !important; }
+.status-rejected { background-color: var(--status-rejected) !important; }
+.status-ghosted { background-color: var(--status-ghosted) !important; }
+
+/* Action Buttons (Remove & Ghost) */
+.delete-btn, .ghost-btn {
+    border: 2px solid var(--border-color);
+    box-shadow: 3px 3px 0px var(--border-color);
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s;
+}
+
+/* MAKE DELETE BUTTON RED BY DEFAULT */
+.delete-btn {
+    background: var(--status-rejected); 
+    color: #000;
+}
+
+.delete-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border-color);
+    filter: brightness(0.9);
+}
+
+/* KEEP GHOST BUTTON TRANSPARENT BY DEFAULT */
+.ghost-btn {
+    background: transparent;
+    color: var(--text-main);
+}
+
+.ghost-btn:hover {
+    background: var(--status-ghosted);
+    color: #000;
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+.delete-btn:active, .ghost-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px var(--border-color);
+}
+
+/* ==========================================
+   8. LOGIN MODAL OVERLAY & PASSWORD CHECKER
+========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay .form-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0;
+    padding: 30px; 
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+.password-strength-container {
+    margin-top: 5px;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.strength-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#strength-label, #settings-strength-label {
+    font-weight: 800;
+    min-width: 50px;
+}
+
+.strength-bar-bg {
+    flex-grow: 1;
+    height: 12px;
+    background-color: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+#strength-bar-fill, #settings-strength-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #f97316;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-reqs {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+}
+
+.strength-reqs li {
+    margin-bottom: 4px;
+    transition: color 0.2s;
+}
+
+.strength-reqs li.req-met {
+    color: var(--status-offer);
+}
+
+/* ==========================================
+   9. FLATPICKR CALENDAR OVERRIDES
+========================================== */
+.flatpickr-calendar {
+    background: var(--surface) !important;
+    border: var(--border-width) solid var(--border-color) !important;
+    box-shadow: 6px 6px 0px var(--shadow-color) !important;
+    border-radius: 0 !important; 
+    padding: 10px !important;
+    width: auto !important; 
+}
+
+.flatpickr-calendar::before, 
+.flatpickr-calendar::after {
+    display: none !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: transparent !important;
+    color: var(--text-main) !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+    font-weight: 900 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    color: var(--text-main) !important;
+}
+
+.flatpickr-months .flatpickr-prev-month, 
+.flatpickr-months .flatpickr-next-month {
+    color: var(--text-main) !important;
+    fill: var(--text-main) !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover, 
+.flatpickr-months .flatpickr-next-month:hover {
+    color: var(--primary) !important;
+}
+
+span.flatpickr-weekday {
+    color: var(--text-muted) !important;
+    font-weight: 800 !important;
+}
+
+.flatpickr-day {
+    color: var(--text-main) !important;
+    font-weight: 700 !important;
+    border-radius: 4px !important;
+    border: 2px solid transparent !important;
+}
+
+.flatpickr-day:hover {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+.flatpickr-day.today {
+    border-color: var(--primary) !important;
+}
+
+.flatpickr-day.selected {
+    background: var(--accent) !important;
+    color: #000 !important; 
+    border-color: #000 !important;
+    font-weight: 900 !important;
+    box-shadow: 2px 2px 0px #000 !important;
+}
+
+[data-theme="dark"] .flatpickr-day.selected {
+    box-shadow: 2px 2px 0px var(--border-color) !important;
+}
+
+/* ==========================================
+   10. BUTTON HOVERS & ANIMATIONS
+========================================== */
+:root[data-theme="light"] {
+    --btn-border: #000000;
+    --btn-shadow: #000000;
+}
+
+:root[data-theme="dark"] {
+    --btn-border: #ffffff;
+    --btn-shadow: #ffffff;
+}
+
+.btn-primary {
+    border: 2px solid var(--btn-border);
+    box-shadow: 4px 4px 0px var(--btn-shadow);
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--btn-shadow);
+    filter: brightness(0.95);
+}
+
+.btn-primary:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--btn-shadow);
+}
+
+/* ==========================================
+   11. FORM VALIDATION & SHAKE ANIMATION
+========================================== */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60%  { transform: translateX(-6px); }
+    40%, 80%  { transform: translateX(6px); }
+}
+
+.input-error {
+    border-color: #ff3b30 !important; 
+    animation: shake 0.4s ease-in-out;
+}
+
+.form-error-msg {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    bottom: 10px; 
+    margin: 0 auto;
+    text-align: center;
+    color: #ff3b30;
+    font-size: 0.90rem;
+    font-weight: 700;
+    display: none; 
+    pointer-events: none; 
+}
+
+/* Modal Error specific positioning */
+#settings-form-error, #login-error {
+    text-align: left;
+    color: #ff3b30;
+    font-size: 0.90rem;
+    font-weight: 700;
+}
+
+/* ==========================================
+   12. FLOATING ACTION BUTTON (FAB)
+========================================== */
+.fab-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--text-main);
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: 6px 6px 0px var(--shadow-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.fab-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0px var(--shadow-color);
+}
+
+.fab-btn:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px var(--shadow-color);
+}
